@@ -1,25 +1,73 @@
-import logo from './logo.svg';
-import './App.css';
+import { useEffect, useState } from "react";
+import "./App.css";
+import AddingForm from "./components/AddingForm";
+import Table from "./components/Table";
+import axios from "axios";
+import Stats from "./components/Stats";
+
+const baseURL = "http://127.0.0.1:8000/api/";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [sales, setSales] = useState();
+
+    useEffect(() => {
+        async function getData() {
+            const response = await axios.get(`${baseURL}sales/`);
+            setSales(response.data);
+        }
+        getData();
+    }, []);
+
+    const [saleToEdit, setSaleToEdit] = useState(null);
+
+    function addSale(newSale) {
+        setSales((prev) => {
+            return [...prev, newSale];
+        });
+    }
+
+    function deleteSale(saleToDel) {
+        axios.delete(`${baseURL}del/${saleToDel}`).then((response) => {
+            if (response.status === 204) {
+                setSales((prev) => {
+                    return prev.filter((sale) => sale.id !== saleToDel);
+                });
+            }
+        });
+    }
+
+    function onEdit(saleToEdit) {
+        axios.get(`${baseURL}sales/${saleToEdit}`).then((response) => {
+            if (response.status === 200) {
+                setSaleToEdit(response.data);
+            }
+        });
+    }
+    function editState(saleEdited) {
+        const cloneSales = sales.map((obj) => {
+            if (obj.id === saleEdited.id) {
+                return (obj = saleEdited);
+            }
+            return obj;
+        });
+
+        setSales(cloneSales);
+    }
+    console.log(sales);
+    return (
+        <div className="App">
+            <h1> Gestions des Pillules</h1>
+            <AddingForm
+                onSend={addSale}
+                saleToEdit={saleToEdit}
+                editState={editState}
+                baseURL={baseURL}
+                endEdition={setSaleToEdit}
+            />
+            <Stats sales={sales} />
+            <Table sales={sales} onDel={deleteSale} onEdit={onEdit} />
+        </div>
+    );
 }
 
 export default App;
