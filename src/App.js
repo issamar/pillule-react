@@ -5,7 +5,7 @@ import Table from "./components/Table";
 import axios from "axios";
 import Stats from "./components/Stats";
 
-const baseURL = "http://127.0.0.1:8000/api/";
+const baseURL = "https://pillule-api-production.up.railway.app/api/";
 
 function App() {
     const [sales, setSales] = useState();
