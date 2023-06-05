@@ -5,8 +5,8 @@ import Table from "./components/Table";
 import axios from "axios";
 import Stats from "./components/Stats";
 
-const baseURL = "https://pillule-api-production.up.railway.app/api/";
-
+//const baseURL = "https://pillule-api-production.up.railway.app/api/";
+const baseURL = "http://127.0.0.1:8000/api/";
 function App() {
     const [sales, setSales] = useState();
     const [search, setSearch] = useState("");
@@ -25,6 +25,8 @@ function App() {
         setSales((prev) => {
             return [...prev, newSale];
         });
+
+        setSearch("");
     }
 
     function deleteSale(saleToDel) {
