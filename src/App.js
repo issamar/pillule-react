@@ -9,6 +9,7 @@ const baseURL = "https://pillule-api-production.up.railway.app/api/";
 
 function App() {
     const [sales, setSales] = useState();
+    const [search, setSearch] = useState("");
 
     useEffect(() => {
         async function getData() {
@@ -53,7 +54,7 @@ function App() {
 
         setSales(cloneSales);
     }
-    console.log(sales);
+
     return (
         <div className="App">
             <h1> Gestions des Pillules</h1>
@@ -63,9 +64,15 @@ function App() {
                 editState={editState}
                 baseURL={baseURL}
                 endEdition={setSaleToEdit}
+                onSearch={setSearch}
             />
             <Stats sales={sales} />
-            <Table sales={sales} onDel={deleteSale} onEdit={onEdit} />
+            <Table
+                sales={sales}
+                onDel={deleteSale}
+                onEdit={onEdit}
+                search={search}
+            />
         </div>
     );
 }

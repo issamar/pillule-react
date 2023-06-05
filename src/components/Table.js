@@ -1,7 +1,7 @@
 import React from "react";
 import Row from "./Row";
 
-const Table = ({ sales, onDel, onEdit }) => {
+const Table = ({ sales, onDel, onEdit, search }) => {
     return (
         <div className="stat-div">
             <table className="table">
@@ -14,16 +14,24 @@ const Table = ({ sales, onDel, onEdit }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {sales?.map((sale) => {
-                        return (
-                            <Row
-                                sale={sale}
-                                key={sale.id}
-                                onDel={() => onDel(sale.id)}
-                                onEdit={() => onEdit(sale.id)}
-                            />
-                        );
-                    })}
+                    {sales
+                        ?.filter((sale) => {
+                            return search.toLowerCase() === ""
+                                ? sale
+                                : sale.patient_name
+                                      .toLowerCase()
+                                      .includes(search);
+                        })
+                        .map((sale) => {
+                            return (
+                                <Row
+                                    sale={sale}
+                                    key={sale.id}
+                                    onDel={() => onDel(sale.id)}
+                                    onEdit={() => onEdit(sale.id)}
+                                />
+                            );
+                        })}
                 </tbody>
             </table>
         </div>

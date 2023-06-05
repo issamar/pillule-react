@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const AddingForm = ({ onSend, saleToEdit, editState, baseURL, endEdition }) => {
+const AddingForm = ({
+    onSend,
+    saleToEdit,
+    editState,
+    baseURL,
+    endEdition,
+    onSearch,
+}) => {
     const [pils, setPils] = useState(() => {
         axios.get(`${baseURL}pils/`).then((response) => {
             setPils(response.data);
@@ -18,6 +25,7 @@ const AddingForm = ({ onSend, saleToEdit, editState, baseURL, endEdition }) => {
     }, [saleToEdit]);
     function handleChange(e) {
         const { name, value } = e.target;
+        onSearch(e.target.value);
         setNewSale((prev) => {
             return { ...prev, [name]: value };
         });
