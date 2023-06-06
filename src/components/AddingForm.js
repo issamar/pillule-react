@@ -8,6 +8,7 @@ const AddingForm = ({
     baseURL,
     endEdition,
     onSearch,
+    notify,
 }) => {
     const [pils, setPils] = useState(() => {
         axios.get(`${baseURL}pils/`).then((response) => {
@@ -33,12 +34,21 @@ const AddingForm = ({
 
     function onSubmit(e) {
         e.preventDefault();
-        axios.post(`${baseURL}add-sale/`, newSale).then((response) => {
-            if (response.status === 201) {
-                onSend(response.data);
-            }
-            setNewSale({ patient_name: "", pils_name: "", sale_date: "" });
-        });
+        axios
+            .post(`${baseURL}add-sale/`, newSale)
+            .then((response) => {
+                if (response.status === 201) {
+                    onSend(response.data);
+                }
+                setNewSale({ patient_name: "", pils_name: "", sale_date: "" });
+            })
+            .catch((error) => {
+                console.log(error);
+                return notify({
+                    status: "fail",
+                    message: error.response.statusText,
+                });
+            });
     }
 
     function onEdition(e) {
