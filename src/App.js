@@ -8,8 +8,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmationBox from "./components/ConfirmationBox";
 
-//const baseURL = "https://pillule-api-production.up.railway.app/api/";
-const baseURL = "http://127.0.0.1:8000/api/";
+const baseURL = "https://pillule-api-production.up.railway.app/api/";
+//const baseURL = "http://127.0.0.1:8000/api/";
 function App() {
     const [sales, setSales] = useState();
     const [search, setSearch] = useState("");
